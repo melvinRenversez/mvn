@@ -10,6 +10,7 @@ class IP:
         nm.scan(hosts=f'{host_ip}.1/24', arguments='-sn')
 
         for host in nm.all_hosts():
+            print("~# ", host)
             liste_ip.append(host)
             
         return liste_ip
@@ -21,9 +22,9 @@ class IP:
         for host in nm.all_hosts():
             print(f"Adresse IP : {host}")
             if 'mac' in nm[host]['addresses']:
-                print(f"Adresse MAC : {nm[host]['addresses']['mac']}")
+                print(f"~# Adresse MAC : {nm[host]['addresses']['mac']}")
             print(f"État : {nm[host].state()}")
 
             if 'vendor' in nm[host]:
-                print(f"Fabricant : {nm[host]['vendor']}")
+                print(f"~# Fabricant : {nm[host]['vendor']}")
             print()
