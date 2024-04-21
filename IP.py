@@ -4,10 +4,19 @@ class IP:
     def __init__(self):
         self.nm = nmap.PortScanner()
 
-    def GetAllIp(host_ip):
+    def GetAllIp(self, host_ip):
         liste_ip = []
         nm = nmap.PortScanner()
         nm.scan(hosts=f'{host_ip}.1/24', arguments='-sn')
+
+        for host in nm.all_hosts():
+            liste_ip.append(host)
+            
+        return liste_ip
+    
+    def scanIp(self, target_ip):
+        nm = nmap.PortScanner()
+        nm.scan(hosts=target_ip, arguments='-sP')
 
         for host in nm.all_hosts():
             print(f"Adresse IP : {host}")
@@ -17,7 +26,4 @@ class IP:
 
             if 'vendor' in nm[host]:
                 print(f"Fabricant : {nm[host]['vendor']}")
-            liste_ip.append(host)
             print()
-            
-        print("list: ", liste_ip)

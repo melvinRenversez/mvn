@@ -1,12 +1,8 @@
 import nmap
 
-addres = "192.168.0"
-
-liste_ip = []
-
-def scan_network(host_ip):
+def scan_network(target_ip):
     nm = nmap.PortScanner()
-    nm.scan(hosts=f'{host_ip}.1/24', arguments='-sn')
+    nm.scan(hosts=target_ip, arguments='-sP')
 
     for host in nm.all_hosts():
         print(f"Adresse IP : {host}")
@@ -16,9 +12,9 @@ def scan_network(host_ip):
 
         if 'vendor' in nm[host]:
             print(f"Fabricant : {nm[host]['vendor']}")
-        liste_ip.append(host)
         print()
-        
-    print("list: ", liste_ip)
 
-scan_network(addres)
+# Utilisation de la fonction pour scanner une adresse IP précise
+target_ip = "192.168.0.41"
+scan_network(target_ip)
+
