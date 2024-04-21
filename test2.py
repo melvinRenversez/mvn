@@ -1,20 +1,22 @@
-import nmap
+import dns.resolver
 
-def scan_network(target_ip):
-    nm = nmap.PortScanner()
-    nm.scan(hosts=target_ip, arguments='-sP')
+def get_hostname(ip_address):
+    try:
+        # Effectuer une requête DNS inverse pour obtenir le nom d'hôte
+        result = dns.resolver.resolve_address(ip_address, 'PTR')
+        # Récupérer le nom d'hôte à partir du résultat de la requête DNS
+        hostname = str(result[0])[:-1]  # Retirer le point à la fin du nom d'hôte
+        return hostname
+    except dns.resolver.NXDOMAIN:
+        return "Nom d'hôte non disponible"
+    except dns.resolver.NoAnswer:
+        return "Aucune réponse trouvée"
+    except dns.exception.Timeout:
+        return "Délai d'attente dépassé"
 
-    for host in nm.all_hosts():
-        print(f"Adresse IP : {host}")
-        if 'mac' in nm[host]['addresses']:
-            print(f"Adresse MAC : {nm[host]['addresses']['mac']}")
-        print(f"État : {nm[host].state()}")
+# Adresse IP pour laquelle vous voulez récupérer le nom d'hôte
+ip_address = "192.168.0.41"
 
-        if 'vendor' in nm[host]:
-            print(f"Fabricant : {nm[host]['vendor']}")
-        print()
-
-# Utilisation de la fonction pour scanner une adresse IP précise
-target_ip = "192.168.0.41"
-scan_network(target_ip)
-
+# Récupération du nom d'hôte associé à l'adresse IP
+hostname = get_hostname(ip_address)
+print(f"Nom d'hôte associé à l'adresse IP {ip_address} : {hostname}")
