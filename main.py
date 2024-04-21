@@ -1,29 +1,10 @@
-import threading
-from pythonping import ping
+from IP import IP
 
-def ping_and_append(host, results):
-    response = ping(host, count=1)
-    if response.success():
-        print("Ping réussi vers", host)
-        for reply in response:
-            print("Réponse :", reply)
-        results.append(host)
-    else:
-        print("Échec du ping vers", host)
+# Créez une instance de la classe IP
+ip_instance = IP()
 
-list_ip = []
+# Appelez la méthode GetAllIp sur l'instance de la classe IP en fournissant l'argument host_ip
+ip_list = ip_instance.GetAllIp("192.168.0")
 
-for i in range(1, 255):
-        host = f"192.168.0.{i}"
-        thread = threading.Thread(target=ping_and_append, args=(host, list_ip))
-        thread.start()
-
-print("Attente de la fin des threads...")
-
-# Attendre que tous les threads se terminent
-main_thread = threading.currentThread()
-for thread in threading.enumerate():
-    if thread is not main_thread:
-        thread.join()
-
-print("Liste des adresses IP avec ping réussi :", list_ip)
+# Affichez la liste des adresses IP trouvées
+print("Liste des adresses IP trouvées :", ip_list)

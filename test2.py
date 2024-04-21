@@ -1,9 +1,12 @@
-import threading
 import nmap
 
-def scan_network(i):
+addres = "192.168.0"
+
+liste_ip = []
+
+def scan_network(host_ip):
     nm = nmap.PortScanner()
-    nm.scan(hosts=f'10.244.{i}.1/24', arguments='-sn')  # Utilisez f-string pour formater l'adresse IP avec la valeur de i
+    nm.scan(hosts=f'{host_ip}.1/24', arguments='-sn')
 
     for host in nm.all_hosts():
         print(f"Adresse IP : {host}")
@@ -13,17 +16,9 @@ def scan_network(i):
 
         if 'vendor' in nm[host]:
             print(f"Fabricant : {nm[host]['vendor']}")
-
+        liste_ip.append(host)
         print()
+        
+    print("list: ", liste_ip)
 
-for i in range( 255):
-    print(i)
-    thread = threading.Thread(target=scan_network, args=(i,))
-    thread.start()
-
-print("Attente de la fin des threads...")
-
-main_thread = threading.currentThread()
-for thread in threading.enumerate():
-    if thread is not main_thread:
-        thread.join()
+scan_network(addres)
