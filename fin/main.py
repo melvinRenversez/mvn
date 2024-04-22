@@ -1,5 +1,5 @@
 import os
-from IP import IP
+from fin.IP import IP
 
 run  = True
 
